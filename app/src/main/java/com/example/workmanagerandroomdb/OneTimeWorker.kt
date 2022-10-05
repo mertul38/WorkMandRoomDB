@@ -11,18 +11,21 @@ import com.example.workmanagerandroomdb.RoomURI.MyURI
 import com.example.workmanagerandroomdb.RoomURI.MyViewModel
 import com.example.workmanagerandroomdb.RoomURI.MyViewModelFactory
 import kotlinx.coroutines.delay
+import java.io.File
+import java.io.FileOutputStream
+import java.util.concurrent.Executor
 
-val TAG = "Worker"
-class MyWorker(context: Context, workerParams: WorkerParameters) : CoroutineWorker(context,workerParams) {
+
+class OneTimeWorker(context: Context, workerParams: WorkerParameters) : CoroutineWorker(context,workerParams) {
 
     val VM  = MyViewModelFactory(context).create(MyViewModel::class.java)
     val outContext = context
     override suspend fun doWork(): Result {
-        scheduler(outContext)
+        SchedulerWorkManager(context = outContext).schedulerOneTimeRequest(outContext)
         Log.d(TAG,"***\nstart doWork: ${Thread.currentThread()}\ntriggered content size: ${this.triggeredContentUris.size}")
         for(uri in this.triggeredContentUris){
             Log.d(TAG,"uri: ${uri.encodedPath}")
-            VM.insertURI(MyURI(Uri.parse("tugba-${uri.toString().substring(0,5)}")))
+            VM.insertURI(MyURI(Uri.parse("content-${uri.toString().takeLast(5)}")))
         }
         Log.d(TAG,"***")
         for(sec in 0..5){

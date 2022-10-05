@@ -1,23 +1,22 @@
-package com.example.workmanagerandroomdb.RoomURI
+package com.example.workmanagerandroomdb.StableRoom
 
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 
-class MyViewModel(context: Context):ViewModel() {
+class StableViewModel(context: Context):ViewModel() {
 
-    var allURIs: LiveData<List<MyURI>>
-    private val repository: MyURIRepositoryImpl
+    var allURIs: LiveData<List<StableURI>>
+    private val repository: StableURIRepositoryImpl
 
     init{
-        val myURIDao = URIRoomDatabase.getInstance(context).myURIDao()
-        repository = MyURIRepositoryImpl(myURIDao)
+        val myURIDao = StableURIRoomDatabase.getInstance(context).stableURIDao()
+        repository = StableURIRepositoryImpl(myURIDao)
         allURIs = repository.getAllURIs()
     }
 
-    fun insertURI(newURI: MyURI){
+    fun insertURI(newURI: StableURI){
         repository.insertURI(newURI)
     }
 
@@ -25,7 +24,7 @@ class MyViewModel(context: Context):ViewModel() {
         repository.deleteLastURI()
     }
 
-    fun getSnapshotAllURIs():List<MyURI>{
+    fun getSnapshotAllURIs():List<StableURI>{
         return repository.getAllURIs_asSnapshot()
     }
 
@@ -40,7 +39,7 @@ class MyViewModel(context: Context):ViewModel() {
         }
         else
         {
-            repository.insertURI(MyURI(Uri.parse(uri)))
+            repository.insertURI(StableURI(Uri.parse(uri)))
         }
     }
 }

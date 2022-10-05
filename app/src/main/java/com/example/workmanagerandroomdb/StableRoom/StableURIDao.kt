@@ -1,4 +1,4 @@
-package com.example.workmanagerandroomdb.RoomURI
+package com.example.workmanagerandroomdb.StableRoom
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -7,19 +7,19 @@ import androidx.room.Query
 import com.example.workmanagerandroomdb.RoomURI.MyURI
 
 @Dao
-interface MyURIDao {
+interface StableURIDao {
 
     @Insert
-    fun insertURI(uri: MyURI)
+    fun insertURI(uri: StableURI)
 
     @Query("DELETE FROM URIs WHERE Id = (SELECT MAX(Id) FROM URIs)")
     fun deleteLastURI()
 
     @Query("SELECT * FROM URIs")
-    fun getAllURIs(): LiveData<List<MyURI>>
+    fun getAllURIs(): LiveData<List<StableURI>>
 
     @Query("SELECT * FROM URIs")
-    fun getAllUris_asSnapshot(): List<MyURI>
+    fun getAllUris_asSnapshot(): List<StableURI>
 
     @Query("SELECT EXISTS(SELECT * FROM URIs WHERE Uri = :uri)")
     fun isExist(uri: String): Boolean
